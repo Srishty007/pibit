@@ -1,0 +1,59 @@
+import json
+
+def parse_resume(resume_text):
+    lines = resume_text.split('\n')
+    resume_dict = {
+        "name": lines[0].strip(),
+        "degree": lines[1].strip(),
+        "contact": {
+            "phone": lines[2].split(': ')[1].strip(),
+            "email": lines[3].split(': ')[1].strip(),
+            "address": lines[4].strip()
+        },
+        "skills": lines[5].strip().split('  '),
+        "summary": "\n".join(lines[7:10]).strip(),
+        "education": {
+            "college": lines[12].strip(),
+            "degree": lines[13].strip(),
+            "cgpa": lines[14].strip().split(': ')[1],
+            "high_school": lines[15].strip(),
+            "12th_grade": {
+                "board": lines[16].strip(),
+                "percentage": lines[17].strip().split(': ')[1]
+            },
+            "10th_grade": {
+                "school": lines[18].strip(),
+                "board": lines[19].strip(),
+                "percentage": lines[20].strip().split(': ')[1]
+            }
+        },
+        "projects": [
+            {
+                "title": lines[22].strip(),
+                "description": "\n".join(lines[23:26]).strip()
+            },
+            {
+                "title": lines[27].strip(),
+                "description": "\n".join(lines[28:31]).strip()
+            }
+        ],
+        "certifications": lines[33:39],
+        "personal_details": {
+            "gender": lines[41].split(': ')[1].strip(),
+            "marital_status": lines[42].split(': ')[1].strip(),
+            "address": lines[43].split(': ')[1].strip(),
+            "dob": lines[44].split(': ')[1].strip(),
+            "languages": lines[45].split(': ')[1].strip().split(','),
+            "phone_numbers": lines[46].split(': ')[1].strip().split(', '),
+            "emails": lines[47].split(': ')[1].strip().split(', '),
+        },
+        "extra_curricular": lines[52].strip()
+    }
+    return json.dumps(resume_dict, indent=4)
+
+# Load the PDF content
+with open('/mnt/data/RA2111003030317_Srishty Ranjan.pdf', 'r') as file:
+    resume_text = file.read()
+
+parsed_resume = parse_resume(resume_text)
+print(parsed_resume)
